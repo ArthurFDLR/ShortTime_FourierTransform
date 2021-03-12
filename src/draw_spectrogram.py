@@ -12,7 +12,7 @@ for entry in config_df.to_numpy()[0]:
     config[key] = value
 print(config)
 
-freq_lim = 3000. #Hz
+freq_lim = 10000. #Hz
 df = pd.read_csv(spectrogram_path, sep=',',header=None, skiprows=1)
 spectrogram = df.to_numpy()[:,0:int(freq_lim/float(config['delta_f']))].transpose()
 spectrogram = np.log(spectrogram)
@@ -21,7 +21,7 @@ rcstyle = {'axes.linewidth': 1.0, 'axes.edgecolor': 'black','ytick.minor.size': 
 sns.set(font_scale=2.0)
 sns.set_style('ticks', rcstyle)
 
-plt.figure(figsize=(18, 10))
+plt.figure(figsize=(22, 10))
 colors_audacity = [(1, 1, 1), (1, 1, 1), (.37, .71, 1), (1., .15, .20), (1, .85, .73), (1, .95, .95)]
 cmap = LinearSegmentedColormap.from_list("audacity", colors_audacity, N=100)
 ax = sns.heatmap(spectrogram, cmap=cmap, cbar = False)

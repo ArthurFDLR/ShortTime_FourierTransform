@@ -82,7 +82,34 @@ Fft::vec_complex Fft::dft(const Fft::vec_complex &signal, size_t vec_begin, size
 	return output;
 }
 
+Fft::vec_complex Fft::dft(const Fft::vec_real &signal, size_t vec_begin, size_t vec_size) {
+	Fft::vec_complex output;
+	size_t n = signal.size();
+	if (vec_size == 0) vec_size = n;
+	size_t vec_end = vec_begin + vec_size;
+	assert(n >= vec_end);
+
+	for (size_t k = 0; k < vec_size/2.; k++) {
+		std::complex<float> sum = 0.;
+		for (size_t t = 0; t < vec_size; t++) {
+			float angle = 2 * PI * t * k / n;
+			sum += signal[t+vec_begin] * std::exp(std::complex<float>(0, -angle));
+		}
+		output.push_back(sum);
+	}
+	return output;
+}
+
 Fft::mat_complex Fft::stft_dft(Fft::vec_complex &vec, size_t window_size, size_t window_step){
+	Fft::mat_complex spectrogram = Fft::mat_complex();
+	for (size_t begin = 0; begin < vec.size() - window_size; begin+=window_step)
+	{
+		spectrogram.push_back(Fft::dft(vec, begin, window_size));
+	}
+	return spectrogram;
+}
+
+Fft::mat_complex Fft::stft_dft(Fft::vec_real &vec, size_t window_size, size_t window_step){
 	Fft::mat_complex spectrogram = Fft::mat_complex();
 	for (size_t begin = 0; begin < vec.size() - window_size; begin+=window_step)
 	{

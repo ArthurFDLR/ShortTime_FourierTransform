@@ -3,10 +3,10 @@
 all: build run draw_spectro
 
 build:
-	g++ ./src/main.cpp -I./src/include ./src/include/fft.cpp -o ./build/main
+	g++ ./src/compute_spectrogram.cpp -I./src/include ./src/include/fft.cpp -o ./build/compute_spectrogram
 
 run:
-	./build/main.exe $(file)
+	./build/compute_spectrogram.exe $(file)
 
 draw_spectro:
 	./venv/Scripts/python.exe ./src/draw_spectrogram.py

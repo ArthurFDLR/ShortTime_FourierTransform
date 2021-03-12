@@ -13,9 +13,11 @@ namespace Fft {
 
 	void transformRadix2(vec_complex &vec);
 	vec_complex dft(const vec_complex &signal, size_t vec_begin = 0, size_t vec_size = 0);
+	vec_complex dft(const vec_real &signal, size_t vec_begin = 0, size_t vec_size = 0);
 	vec_complex fft(const vec_complex &signal, size_t vec_begin = 0, size_t vec_size = 0);
 	vec_complex fft(const vec_real &signal, size_t vec_begin = 0, size_t vec_size = 0);
 	mat_complex stft_dft(vec_complex &vec, size_t window_size, size_t window_step);
+	mat_complex stft_dft(vec_real &vec, size_t window_size, size_t window_step);
 	mat_complex stft_fft(vec_complex &vec, size_t window_size, size_t window_step);
 	mat_complex stft_fft(vec_real &vec, size_t window_size, size_t window_step);
 
