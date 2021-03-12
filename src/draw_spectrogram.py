@@ -12,10 +12,10 @@ for entry in config_df.to_numpy()[0]:
     config[key] = value
 print(config)
 
-freq_lim = 10000. #Hz
+freq_lim = 15000. #Hz
 df = pd.read_csv(spectrogram_path, sep=',',header=None, skiprows=1)
 spectrogram = df.to_numpy()[:,0:int(freq_lim/float(config['delta_f']))].transpose()
-spectrogram = np.log(spectrogram)
+spectrogram = np.log10(spectrogram)
 
 rcstyle = {'axes.linewidth': 1.0, 'axes.edgecolor': 'black','ytick.minor.size': 5.0}
 sns.set(font_scale=2.0)
