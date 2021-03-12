@@ -109,9 +109,11 @@ Fft::mat_complex Fft::stft_fft(Fft::vec_real &vec, size_t window_size, size_t wi
 	return spectrogram;
 }
 
-void Fft::save_spectrogram(mat_complex& spectro, std::string name){
+void Fft::save_spectrogram(mat_complex& spectro, std::vector<std::string> infos, std::string name){
 	std::ofstream myfile;
 	myfile.open(name);
+	for (size_t i = 0; i < infos.size(); i++)
+		myfile << infos[i] << ( i==infos.size()-1 ? "\n" :",");
 	for (auto& row : spectro) { 
 		for (auto& elem : row) { 
         	myfile << abs(elem) << ',';

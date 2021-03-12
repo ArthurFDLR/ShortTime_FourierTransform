@@ -19,7 +19,7 @@ namespace Fft {
 	mat_complex stft_fft(vec_complex &vec, size_t window_size, size_t window_step);
 	mat_complex stft_fft(vec_real &vec, size_t window_size, size_t window_step);
 
-	void save_spectrogram(mat_complex& spectro, std::string name = "spectrogram.csv");
+	void save_spectrogram(mat_complex& spectro, std::vector<std::string> infos, std::string name = "spectrogram.csv");
 }
 
 #endif
