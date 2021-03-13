@@ -70,19 +70,27 @@ void Fft::transform_radix2(Fft::vec_complex & x) {
     }
 }
 
-Fft::vec_complex Fft::fft(const Fft::vec_complex &signal, size_t vec_begin, size_t vec_size) {
+Fft::vec_complex Fft::fft(const Fft::vec_complex &signal, size_t vec_begin, size_t vec_size, bool in_place) {
 	Fft::vec_complex::const_iterator first = signal.begin() + vec_begin;
 	Fft::vec_complex::const_iterator last = signal.begin() + vec_begin + vec_size;
 	Fft::vec_complex subsignal(first, last);
-	Fft::transform_radix2(subsignal);
+	if (in_place){
+		Fft::transform_radix2_inplace(subsignal);
+	} else {
+		Fft::transform_radix2(subsignal);
+	}
 	return subsignal;
 }
 
-Fft::vec_complex Fft::fft(const Fft::vec_real &signal, size_t vec_begin, size_t vec_size) {
+Fft::vec_complex Fft::fft(const Fft::vec_real &signal, size_t vec_begin, size_t vec_size, bool in_place) {
 	Fft::vec_real::const_iterator first = signal.begin() + vec_begin;
 	Fft::vec_real::const_iterator last = signal.begin() + vec_begin + vec_size;
 	Fft::vec_complex subsignal(first, last);
-	Fft::transform_radix2(subsignal);
+	if (in_place){
+		Fft::transform_radix2_inplace(subsignal);
+	} else {
+		Fft::transform_radix2(subsignal);
+	}
 	return subsignal;
 }
 
@@ -138,20 +146,20 @@ Fft::mat_complex Fft::stft_dft(Fft::vec_real &vec, size_t window_size, size_t wi
 	return spectrogram;
 }
 
-Fft::mat_complex Fft::stft_fft(Fft::vec_complex &vec, size_t window_size, size_t window_step){
+Fft::mat_complex Fft::stft_fft(Fft::vec_complex &vec, size_t window_size, size_t window_step, bool in_place){
 	Fft::mat_complex spectrogram = Fft::mat_complex();
 	for (size_t begin = 0; begin < vec.size() - window_size; begin+=window_step)
 	{
-		spectrogram.push_back(Fft::fft(vec, begin, window_size));
+		spectrogram.push_back(Fft::fft(vec, begin, window_size, in_place));
 	}
 	return spectrogram;
 }
 
-Fft::mat_complex Fft::stft_fft(Fft::vec_real &vec, size_t window_size, size_t window_step){
+Fft::mat_complex Fft::stft_fft(Fft::vec_real &vec, size_t window_size, size_t window_step, bool in_place){
 	Fft::mat_complex spectrogram = Fft::mat_complex();
 	for (size_t begin = 0; begin < vec.size() - window_size; begin+=window_step)
 	{
-		spectrogram.push_back(Fft::fft(vec, begin, window_size));
+		spectrogram.push_back(Fft::fft(vec, begin, window_size, in_place));
 	}
 	return spectrogram;
 }
