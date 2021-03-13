@@ -61,12 +61,12 @@ void Fft::transform_radix2(Fft::vec_complex & x) {
     Fft::transform_radix2(x_even);
     Fft::transform_radix2(x_odd);
 
-    float w_exp = 2 * PI / n;
-    std::complex<float> w(1), wn(cos(w_exp), sin(w_exp));
-    for (int i = 0; 2 * i < n; i++) {
-        x[i] = x_even[i] + w * x_odd[i];
-        x[i + n/2] = x_even[i] - w * x_odd[i];
-        w *= wn;
+	std::complex<float> w = 1.;
+    std::complex<float> w_n = std::exp(std::complex<float>(0, - 2. * PI / n));
+    for (int k = 0; 2 * k < n; k++) {
+        x[k] = x_even[k] + w * x_odd[k];
+        x[k + n/2] = x_even[k] - w * x_odd[k];
+        w *= w_n;
     }
 }
 
