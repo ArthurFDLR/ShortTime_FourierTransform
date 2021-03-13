@@ -12,7 +12,7 @@ static size_t reverseBits(size_t val, size_t width) {
 	return result;
 }
 
-void Fft::transformRadix2(vec_complex &signal) {
+void Fft::transform_radix2_inplace(vec_complex &signal) {
 	// Length variables
 	size_t n = signal.size();
 	size_t levels = 0;
@@ -48,11 +48,33 @@ void Fft::transformRadix2(vec_complex &signal) {
 	}
 }
 
+void Fft::transform_radix2(Fft::vec_complex & x) {
+    int n = x.size();
+    if (n == 1)
+        return;
+
+    Fft::vec_complex x_even(n / 2), x_odd(n / 2);
+    for (int i = 0; 2 * i < n; i++) {
+        x_even[i] = x[2*i];
+        x_odd[i] = x[2*i+1];
+    }
+    Fft::transform_radix2(x_even);
+    Fft::transform_radix2(x_odd);
+
+    float w_exp = 2 * PI / n;
+    std::complex<float> w(1), wn(cos(w_exp), sin(w_exp));
+    for (int i = 0; 2 * i < n; i++) {
+        x[i] = x_even[i] + w * x_odd[i];
+        x[i + n/2] = x_even[i] - w * x_odd[i];
+        w *= wn;
+    }
+}
+
 Fft::vec_complex Fft::fft(const Fft::vec_complex &signal, size_t vec_begin, size_t vec_size) {
 	Fft::vec_complex::const_iterator first = signal.begin() + vec_begin;
 	Fft::vec_complex::const_iterator last = signal.begin() + vec_begin + vec_size;
 	Fft::vec_complex subsignal(first, last);
-	Fft::transformRadix2(subsignal);
+	Fft::transform_radix2(subsignal);
 	return subsignal;
 }
 
@@ -60,7 +82,7 @@ Fft::vec_complex Fft::fft(const Fft::vec_real &signal, size_t vec_begin, size_t 
 	Fft::vec_real::const_iterator first = signal.begin() + vec_begin;
 	Fft::vec_real::const_iterator last = signal.begin() + vec_begin + vec_size;
 	Fft::vec_complex subsignal(first, last);
-	Fft::transformRadix2(subsignal);
+	Fft::transform_radix2(subsignal);
 	return subsignal;
 }
 
