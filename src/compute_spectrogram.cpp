@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	double delta_f = double(F_s)/window_size;
 
 	auto t_start = std::chrono::high_resolution_clock::now();
-	Fft::mat_complex spectrogram = Fft::stft_fft(sample, window_size, window_step, false);
+	Fft::mat_complex spectrogram = Fft::stft_fft(sample, window_size, window_step, true);
 	auto t_end = std::chrono::high_resolution_clock::now();
 	uint64_t execution_time = std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count();
 
